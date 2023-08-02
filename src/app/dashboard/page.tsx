@@ -3,6 +3,8 @@ import React from "react";
 import { redirect } from "next/navigation";
 import QuizMeCard from "@/components/dashboard/QuizMeCard";
 import HistoryCard from "@/components/dashboard/HistoryCard";
+import HotTopicsCard from "@/components/dashboard/HotTopicsCard";
+import RecentActivities from "@/components/dashboard/RecentActivities";
 
 type Props = {};
 
@@ -26,7 +28,10 @@ const page = async (props: Props) => {
         <HistoryCard />
       </div>
 
-      <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-7"></div>
+      <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-8">
+        <HotTopicsCard />
+        <RecentActivities />
+      </div>
     </main>
   );
 };
