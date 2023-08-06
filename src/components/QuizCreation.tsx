@@ -25,6 +25,9 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { BookOpen, CopyCheck } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
@@ -32,6 +35,21 @@ type Props = {};
 type Input = z.infer<typeof quizCreationSchema>;
 
 const QuizCreation = (props: Props) => {
+  const router = useRouter();
+  // defining the function to hit our rest endpoint, destructuring into a getQuestions function and getting a loading value (isLoading)
+  const { mutate: getQuestions, isLoading } = useMutation({
+    // mutation function using axios, using our Input type from above to ensure type safety
+    mutationFn: async ({ amount, topic, type }: Input) => {
+      const response = await axios.post("/api/game", {
+        amount,
+        topic,
+        type,
+      });
+      // finally return the data
+      return response.data;
+    },
+  });
+
   // creating a react hook form and passing in our Input schema to declare what our input and default values will be
   const form = useForm<Input>({
     // need to tell react hook form that we're using zod, so we use zodresolver
@@ -45,7 +63,24 @@ const QuizCreation = (props: Props) => {
 
   // onsubmit function for when we submit our input into the form
   function onSubmit(input: Input) {
-    alert(JSON.stringify(input, null, 2));
+    getQuestions(
+      {
+        amount: input.amount,
+        topic: input.topic,
+        type: input.type,
+      },
+      {
+        // when the function from route.ts is successfull it returns a gameId
+        onSuccess: ({ gameId }) => {
+          // navigating user to their respective quizzes
+          if (form.getValues('type') == 'open_ended') {
+            router.push(`/play/open-ended/${gameId}`);
+          } else {
+            router.push(`/play/mcq/${gameId}`);
+          }
+        },
+      }
+    );
   }
 
   // will re-render the whole component whenever the state changes, most notibaly so that the flipping buttons are responsive
@@ -139,7 +174,7 @@ const QuizCreation = (props: Props) => {
                   Open ended
                 </Button>
               </div>
-              <Button type="submit">Submit</Button>
+              <Button disabled={isLoading} type="submit">Submit</Button>
             </form>
           </Form>
         </CardContent>

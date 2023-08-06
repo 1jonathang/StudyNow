@@ -27,7 +27,7 @@ const UserAccountNav = ({ user }: Props) => {
         <UserAvatar user={user}/>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="bg-white">
+      <DropdownMenuContent className="bg-white dark:text-slate-400 dark:bg-slate-900">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             {user.name && <p className="font-medium">{user.name}</p>}
