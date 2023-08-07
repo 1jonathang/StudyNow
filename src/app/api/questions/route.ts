@@ -8,17 +8,17 @@ import { ZodError } from "zod";
 export async function POST(req: Request, res: Response) {
   try {
     // unauthorized cannot use this post endpoint
-    const session = await getAuthSession();
-    if (!session?.user) {
-      return NextResponse.json(
-        {
-          error: "You must be logged in to create a quiz",
-        },
-        {
-          status: 401,
-        }
-      );
-    }
+    // const session = await getAuthSession();
+    // if (!session?.user) {
+    //   return NextResponse.json(
+    //     {
+    //       error: "You must be logged in to create a quiz",
+    //     },
+    //     {
+    //       status: 401,
+    //     }
+    //   );
+    // }
     // getting body request
     const body = await req.json();
     // deconstructing the body, so if the parse function returns true, then it is guaranteed that it is a question schema type

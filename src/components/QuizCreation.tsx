@@ -71,13 +71,15 @@ const QuizCreation = (props: Props) => {
       },
       {
         // when the function from route.ts is successfull it returns a gameId
-        onSuccess: ({ gameId }) => {
-          // navigating user to their respective quizzes
-          if (form.getValues('type') == 'open_ended') {
-            router.push(`/play/open-ended/${gameId}`);
-          } else {
-            router.push(`/play/mcq/${gameId}`);
-          }
+        onSuccess: ({ gameId }: { gameId: string }) => {
+          setTimeout(() => {
+            // navigating user to their respective quizzes
+            if (form.getValues("type") == "open_ended") {
+              router.push(`/play/open-ended/${gameId}`);
+            } else {
+              router.push(`/play/mcq/${gameId}`);
+            }
+          }, 2000);
         },
       }
     );
@@ -174,7 +176,9 @@ const QuizCreation = (props: Props) => {
                   Open ended
                 </Button>
               </div>
-              <Button disabled={isLoading} type="submit">Submit</Button>
+              <Button disabled={isLoading} type="submit">
+                Submit
+              </Button>
             </form>
           </Form>
         </CardContent>
